@@ -1,0 +1,14 @@
+{
+    "description": "description of MatchingTux",
+    "framework": "ubuntu-sdk-13.10",
+    "hooks": {
+        "MatchingTux": {
+            "apparmor": "MatchingTux.json",
+            "desktop": "MatchingTux.desktop"
+        }
+    },
+    "maintainer": "Jonathan D'Orleans <jonathan.dorleans@gmail.com>",
+    "name": "com.ubuntu.developer.jonathan.dorleans.matchingtux",
+    "title": "MatchingTux",
+    "version": "0.1"
+}
