@@ -7,7 +7,7 @@
             "desktop": "MatchingTux.desktop"
         }
     },
-    "maintainer": "Jonathan D'Orleans <jonathan.dorleans@gmail.com>",
+    "maintainer": "",
     "name": "com.ubuntu.developer.jonathan.dorleans.matchingtux",
     "title": "MatchingTux",
     "version": "0.1"

@@ -361,8 +361,18 @@ function swap(from, to)
 
         if (distance === 1 || distance === stageSize)
         {
+            var col = from % stageSize;
+            var row = Math.floor(from / stageSize);
             gModel.setProperty(from, "index", to);
+            gModel.setProperty(from, "x", row);
+            gModel.setProperty(from, "y", col);
+
+            col = to % stageSize;
+            row = Math.floor(to / stageSize);
             gModel.setProperty(to, "index", from);
+            gModel.setProperty(to, "x", row);
+            gModel.setProperty(to, "y", col);
+
             gModel.move(min, max, 1);
             gModel.move(max-1, min, 1);
         }
@@ -456,9 +466,9 @@ function removeBlock(block)
         gModel.set(idx, Creator.createFromPack(idx, block.isElement, virusEffect.element));
     }
     else {
-        idx = moveToTop(idx);
         gModel.remove(idx, 1);
         gModel.insert(idx, createBlock(idx));
+        idx = moveToTop(idx);
     }
 }
 

@@ -201,7 +201,6 @@ Page {
         add: Transition {
             SequentialAnimation {
                 PropertyAction { property: "opacity"; value: 0 }
-                PauseAnimation { duration: 400 }
                 ParallelAnimation {
                     NumberAnimation { property: "opacity"; from: 0; to: 1; duration: 400 }
                     NumberAnimation { property: "scale"; from: 0; to: 1; duration: 400 }
@@ -213,18 +212,19 @@ Page {
         remove: Transition {
             SequentialAnimation {
                 PropertyAction { target: grid; property: "GridView.delayRemove"; value: true }
-                NumberAnimation { property: "scale"; from: 1; to: 0; duration: 400 }
+                NumberAnimation { property: "scale"; from: 1; to: 0; duration: 200 }
                 PropertyAction { target: grid; property: "GridView.delayRemove"; value: false }
             }
         }
 
         move: Transition {
-            NumberAnimation { properties: "x,y"; duration: 200; }
+            NumberAnimation { properties: "x,y"; duration: 200 }
         }
 
         displaced: Transition {
-            NumberAnimation { properties: "x,y"; duration: 200; }
+            NumberAnimation { properties: "x,y"; duration: 200 }
         }
+        focus: true;
     }
 
     Label {
