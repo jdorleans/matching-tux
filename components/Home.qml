@@ -1,58 +1,47 @@
 import QtQuick 2.0
 import Ubuntu.Components 0.1
+import Ubuntu.Components.Popups 0.1
 
 Page {
-    id: about;
-    title: i18n.tr("About");
+    id: home;
+    title: i18n.tr("Home");
 
-    Image {
-        id: image;
-        source: "../img/tux.png";
-        anchors {
-            top: parent.top;
-            topMargin: units.gu(4);
-            horizontalCenter: parent.horizontalCenter;
-        }
-    }
-    Label {
-        id: game;
-        fontSize: "x-large";
-        text: "Matching Tux";
-        anchors {
-            top: image.bottom;
-            topMargin: units.gu(1);
-            horizontalCenter: parent.horizontalCenter;
-        }
-    }
+    Grid {
+        id: grid;
+        columns: 1;
+        width: units.gu(20);
+        rowSpacing: units.gu(2);
+        anchors.centerIn: parent;
+        anchors.verticalCenterOffset: units.gu(-10);
 
-    Label {
-        id: title;
-        fontSize: "large";
-        text: i18n.tr("Created By");
-        anchors {
-            top: game.bottom;
-            topMargin: units.gu(4);
-            horizontalCenter: parent.horizontalCenter;
+        Button {
+            id: start;
+            width: parent.width;
+            text: i18n.tr("Start Game");
+
+            onClicked: {
+                pages.selectedTabIndex = tabStage.index;
+            }
         }
-    }
-    Label {
-        id: author;
-        fontSize: "large";
-        text: "Jonathan D'Orleans";
-        anchors {
-            top: title.bottom;
-            topMargin: units.gu(2);
-            horizontalCenter: parent.horizontalCenter;
+
+        Button {
+            id: about;
+            width: parent.width;
+            text: i18n.tr("About");
+
+            onClicked: {
+                pages.selectedTabIndex = tabAbout.index;
+            }
         }
-    }
-    Label {
-        id: email;
-        fontSize: "medium";
-        text: "<jonathan.dorleans@gmail.com>";
-        anchors {
-            top: author.bottom;
-            topMargin: units.gu(1);
-            horizontalCenter: parent.horizontalCenter;
+
+        Button {
+            id: quit;
+            width: parent.width;
+            text: i18n.tr("Quit");
+
+            onClicked: {
+                Qt.quit();
+            }
         }
     }
 

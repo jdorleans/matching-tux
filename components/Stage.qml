@@ -1,5 +1,6 @@
 import QtQuick 2.0
 import Ubuntu.Components 0.1
+import Ubuntu.Components.Popups 0.1
 import "../scripts/StageManager.js" as Manager
 
 Page {
@@ -41,6 +42,9 @@ Page {
                 target: button;
                 iconSource: "../img/controls/play.png";
             }
+            onCompleted: {
+                PopupUtils.open(nextlevel);
+            }
         },
         State {
             name: "gameover";
@@ -50,6 +54,31 @@ Page {
             }
         }
     ]
+
+    Component {
+        id: nextlevel;
+        Dialog {
+            id: dialog;
+            title: i18n.tr("Congratulation!\nYou saved Tux!");
+            text: i18n.tr("Do you want to go to next level?");
+
+            Button {
+                text: i18n.tr("Go to Next Level");
+                onClicked: {
+                    // must save data
+                    stage.level++;
+                    Manager.startGame();
+                    PopupUtils.close(dialog);
+                    stage.state = "started";
+                }
+            }
+            Button {
+                text: i18n.tr("Quit");
+                gradient: UbuntuColors.greyGradient
+                onClicked: Qt.quit();
+            }
+        }
+    }
 
     Panel {
         id: infoWrapper;
@@ -293,10 +322,7 @@ Page {
                 stage.state = "started";
             }
             else if (stage.state === "completed") {
-                // must save data
-                stage.level++;
-                Manager.startGame();
-                stage.state = "started";
+                PopupUtils.open(nextlevel);
             }
             else if (stage.state === "gameover") {
                 Manager.startGame();

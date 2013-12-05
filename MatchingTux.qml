@@ -25,18 +25,37 @@ MainView {
 
     Tabs {
         id: pages;
+
         Tab {
-            title: stage.title;
-            page: Stage {
-                id: stage;
-                level: 20;
+            id: tabHome;
+            title: home.title;
+            property int index: 0;
+
+            page: Home {
+                id: home;
             }
         }
+
         Tab {
+            id: tabStage;
+            title: stage.title;
+            property int index: 1;
+
+            page: Stage {
+                id: stage;
+            }
+        }
+
+        Tab {
+            id: tabAbout;
             title: about.title;
+            property int index: 2;
+
             page: About {
                 id: about;
             }
         }
+
     }
+
 }

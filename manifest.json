@@ -1,5 +1,5 @@
 {
-    "description": "description of MatchingTux",
+    "description": "Matching Tux is a fun puzzle game which tests your logic ability. It is developed under GPLv3 licence which means it is totally free to play, reuse and distribuite.",
     "framework": "ubuntu-sdk-13.10",
     "hooks": {
         "MatchingTux": {
@@ -7,8 +7,8 @@
             "desktop": "MatchingTux.desktop"
         }
     },
-    "maintainer": "",
-    "name": "com.ubuntu.developer.jonathan.dorleans.matchingtux",
-    "title": "MatchingTux",
+    "maintainer": "Jonathan D'Orleans <jonathan.dorleans@gmail.com>",
+    "name": "com.ubuntu.developer.jdorleans.matchingtux",
+    "title": "Matching Tux",
     "version": "0.1"
 }
