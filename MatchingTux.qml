@@ -1,6 +1,7 @@
 import QtQuick 2.0
 import Ubuntu.Components 0.1
 import "components"
+import "components/test"
 
 /*!
     \brief MainView with a Label and Button elements.
@@ -25,6 +26,7 @@ MainView {
 
     Tabs {
         id: pages;
+        selectedTabIndex: 1;
 
         Tab {
             id: tabHome;
@@ -53,6 +55,16 @@ MainView {
 
             page: About {
                 id: about;
+            }
+        }
+
+        Tab {
+            id: tabTest;
+            title: test.title;
+            property int index: 3;
+
+            page: StageTest {
+                id: test;
             }
         }
 
