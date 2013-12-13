@@ -20,7 +20,9 @@ Page {
             text: i18n.tr("Start Game");
 
             onClicked: {
-                pages.selectedTabIndex = tabStage.index;
+                tabHome.visible = false;
+                tabAbout.visible = false;
+                pages.push(stage);
             }
         }
 
@@ -29,9 +31,7 @@ Page {
             width: parent.width;
             text: i18n.tr("About");
 
-            onClicked: {
-                pages.selectedTabIndex = tabAbout.index;
-            }
+            onClicked: tabs.selectedTabIndex = tabAbout.index;
         }
 
         Button {
@@ -39,9 +39,7 @@ Page {
             width: parent.width;
             text: i18n.tr("Quit");
 
-            onClicked: {
-                Qt.quit();
-            }
+            onClicked: Qt.quit();
         }
     }
 

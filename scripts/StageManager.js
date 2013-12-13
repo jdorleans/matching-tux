@@ -330,6 +330,7 @@ function bugPosition(first, second)
         var isVirus = (key === Config.virus.key);
         var hasVirus = (key === virusEffect.element);
 
+        // does not suggest virus or infected element if moves = 0
         if ((hasVirus || isVirus) && virusEffect.moves === 0) {
             indexs.splice(i, 1);
         } else {
@@ -361,17 +362,8 @@ function swap(from, to)
 
         if (distance === 1 || distance === stageSize)
         {
-            var col = from % stageSize;
-            var row = Math.floor(from / stageSize);
             gModel.setProperty(from, "index", to);
-            gModel.setProperty(from, "x", row);
-            gModel.setProperty(from, "y", col);
-
-            col = to % stageSize;
-            row = Math.floor(to / stageSize);
             gModel.setProperty(to, "index", from);
-            gModel.setProperty(to, "x", row);
-            gModel.setProperty(to, "y", col);
 
             gModel.move(min, max, 1);
             gModel.move(max-1, min, 1);
@@ -487,6 +479,7 @@ function updateTuxGoal(value)
     if (value > 0) {
         tuxsOnStage -= value;
         stage.tuxs += value;
+        increaseTime(value*3);
         updateTuxCount();
     }
 }
@@ -521,6 +514,7 @@ function powerDebian(value)
         if (value > matchSize+1) {
             packs = value;
             value *= 2;
+            virusEffect.moves++
         }
 
         for (var idx = 0; idx<matrix; idx++)
@@ -559,6 +553,7 @@ function powerUbuntu(value)
 
         if (value > matchSize+1) {
             fixs = value+2;
+            virusEffect.moves++
         }
 
         for (var idx = 0; idx<matrix; idx++)
@@ -590,6 +585,10 @@ function powerArch(indexs)
 
     if (indexs.length > matchSize)
     {
+        if (indexs.length > matchSize+1) {
+            virusEffect.moves++;
+        }
+
         var cols = [];
         var rows = [];
         var rmCol = null;
@@ -649,12 +648,12 @@ function powerMint(value)
     if (value > matchSize)
     {
         virusEffect.moves++;
-        removeBugEffect(value);
-        removeVirusEffect(value);
+        removeBugEffect();
+        removeVirusEffect();
 
         if (value > matchSize+1) {
             virusEffect.moves++;
-            removeBugEffect(value);
+            removeBugEffect();
         }
     }
 }
@@ -708,7 +707,6 @@ function tuxReachesGoal(blocks)
 
     if (block.key === Config.tux.key) {
         blocks.push(block);
-//        increaseTime(5);
     }
 }
 

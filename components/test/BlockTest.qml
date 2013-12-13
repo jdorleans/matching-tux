@@ -3,11 +3,11 @@ import Ubuntu.Components 0.1
 
 Button {
     id: block;
-    width: units.gu(6);
+    width: units.gu(8);
     height: width;
     color: changeColor();
     scale: changeScale();
-    text: pos;
+    text: x+","+y;
 
     property int pos;
     property url image;

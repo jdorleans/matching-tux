@@ -24,50 +24,43 @@ MainView {
     width: units.gu(50);
     height: units.gu(80);
 
-    Tabs {
-        id: pages;
-        selectedTabIndex: 1;
+    PageStack {
+        id: pages
 
-        Tab {
-            id: tabHome;
-            title: home.title;
-            property int index: 0;
+        Tabs {
+            id: tabs;
 
-            page: Home {
-                id: home;
+            Tab {
+                id: tabHome;
+                title: home.title;
+                property int index: 0;
+
+                page: Home {
+                    id: home;
+                }
+            }
+
+            Tab {
+                id: tabAbout;
+                title: about.title;
+                property int index: 1;
+
+                page: About {
+                    id: about;
+                }
             }
         }
 
-        Tab {
-            id: tabStage;
-            title: stage.title;
-            property int index: 1;
-
-            page: Stage {
-                id: stage;
-            }
+        Stage {
+            id: stage;
+            level: 50; // DEBUG
+            visible: false;
         }
 
-        Tab {
-            id: tabAbout;
-            title: about.title;
-            property int index: 2;
-
-            page: About {
-                id: about;
-            }
+        StageTest {
+            id: test;
+            visible: false; // DEBUG
         }
-
-        Tab {
-            id: tabTest;
-            title: test.title;
-            property int index: 3;
-
-            page: StageTest {
-                id: test;
-            }
-        }
-
     }
 
 }

@@ -12,6 +12,7 @@ Page {
     property int time: 0;
     property int scores: 0;
     property int maxScores: 100;
+    property string controlsPath: "../img/controls/";
 
     title: i18n.tr("Level") +" "+ level;
     states: [
@@ -19,28 +20,28 @@ Page {
             name: "stopped";
             PropertyChanges {
                 target: button;
-                iconSource: "../img/controls/play.png";
+                iconSource: controlsPath +"play.png";
             }
         },
         State {
             name: "started";
             PropertyChanges {
                 target: button;
-                iconSource: "../img/controls/pause.png";
+                iconSource: controlsPath +"pause.png";
             }
         },
         State {
             name: "paused";
             PropertyChanges {
                 target: button;
-                iconSource: "../img/controls/play.png";
+                iconSource: controlsPath +"play.png";
             }
         },
         State {
             name: "completed";
             PropertyChanges {
                 target: button;
-                iconSource: "../img/controls/play.png";
+                iconSource: controlsPath +"play.png";
             }
             onCompleted: {
                 PopupUtils.open(nextlevel);
@@ -50,7 +51,7 @@ Page {
             name: "gameover";
             PropertyChanges {
                 target: button;
-                iconSource: "../img/controls/redo.png";
+                iconSource: controlsPath +"redo.png";
             }
         }
     ]
@@ -194,6 +195,7 @@ Page {
         cellWidth: units.gu(7);
         cellHeight: units.gu(7);
         currentIndex: -1;
+        interactive: false;
 
         model: ListModel {
             id: gModel;
@@ -202,6 +204,13 @@ Page {
         //Note: Delegates are instantiated as needed and may be destroyed at any time. State should never be stored in a delegate.
         delegate: Block {
             id: gBlock;
+            image: img;
+            property string name: {
+//                if (key === "ubuntu") {
+//                    ubuntuEmitter.enabled = true;
+//                }
+                return key;
+            }
             color: {
                 if (GridView.isCurrentItem) {
                     if (Manager.hasBug()) {
@@ -213,7 +222,6 @@ Page {
                     return "transparent";
                 }
             }
-            image: img;
             onClicked: {
                 if (stage.state === "started") {
                     Manager.select(index);
@@ -230,30 +238,39 @@ Page {
         add: Transition {
             SequentialAnimation {
                 PropertyAction { property: "opacity"; value: 0 }
+                PauseAnimation { duration: 600 }
+                PropertyAction { property: "state"; value: "explode" }
                 ParallelAnimation {
                     NumberAnimation { property: "opacity"; from: 0; to: 1; duration: 400 }
                     NumberAnimation { property: "scale"; from: 0; to: 1; duration: 400 }
                     NumberAnimation { easing.amplitude: 1; properties: "y"; duration: 1000; easing.type: Easing.OutBounce }
                 }
+                PropertyAction { property: "state"; value: "" }
             }
         }
 
         remove: Transition {
             SequentialAnimation {
-                PropertyAction { target: grid; property: "GridView.delayRemove"; value: true }
-                NumberAnimation { property: "scale"; from: 1; to: 0; duration: 200 }
-                PropertyAction { target: grid; property: "GridView.delayRemove"; value: false }
+                PropertyAction { property: "state"; value: "explode" }
+                NumberAnimation { property: "scale"; to: 0; duration: 400 }
             }
         }
 
         move: Transition {
-            NumberAnimation { properties: "x,y"; duration: 200 }
+            SequentialAnimation {
+                PauseAnimation { duration: 200 }
+                NumberAnimation { properties: "x"; duration: 200; }
+                NumberAnimation { easing.amplitude: 0.8; properties: "y"; duration: 800; easing.type: Easing.OutBounce }
+            }
         }
 
         displaced: Transition {
-            NumberAnimation { properties: "x,y"; duration: 200 }
+            SequentialAnimation {
+                PauseAnimation { duration: 200 }
+                NumberAnimation { properties: "x"; duration: 200; }
+                NumberAnimation { easing.amplitude: 0.8; properties: "y"; duration: 800; easing.type: Easing.OutBounce }
+            }
         }
-        focus: true;
     }
 
     Label {
