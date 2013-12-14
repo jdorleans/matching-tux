@@ -5,8 +5,6 @@ import "../scripts/StageManager.js" as Manager
 
 Page {
     id: stage;
-    state: "stopped";
-
     property int level: 1;
     property int tuxs: 0;
     property int time: 0;
@@ -14,63 +12,83 @@ Page {
     property int maxScores: 100;
     property string controlsPath: "../img/controls/";
 
+    property string started: "started";
+    property string stopped: "stopped";
+    property string paused: "paused";
+    property string completed: "completed";
+    property string gameover: "gameover";
+
+    state: stopped;
     title: i18n.tr("Level") +" "+ level;
-    states: [
-        State {
-            name: "stopped";
-            PropertyChanges {
-                target: button;
-                iconSource: controlsPath +"play.png";
-            }
-        },
-        State {
-            name: "started";
-            PropertyChanges {
-                target: button;
-                iconSource: controlsPath +"pause.png";
-            }
-        },
-        State {
-            name: "paused";
-            PropertyChanges {
-                target: button;
-                iconSource: controlsPath +"play.png";
-            }
-        },
-        State {
-            name: "completed";
-            PropertyChanges {
-                target: button;
-                iconSource: controlsPath +"play.png";
-            }
-            onCompleted: {
-                PopupUtils.open(nextlevel);
-            }
-        },
-        State {
-            name: "gameover";
-            PropertyChanges {
-                target: button;
-                iconSource: controlsPath +"redo.png";
-            }
-        }
-    ]
+
+    function start() {
+        Manager.startGame();
+        stage.state = stage.started;
+        button.iconSource = controlsPath +"pause.png"
+    }
+
+    function stop() {
+        stage.state = stage.stopped;
+        button.iconSource = controlsPath +"play.png"
+    }
+
+    function pause() {
+        stage.state = stage.paused;
+        button.iconSource = controlsPath +"play.png"
+    }
+
+    function complete() {
+        stage.state = stage.completed;
+        button.iconSource = controlsPath +"play.png"
+        PopupUtils.open(nextlevel);
+    }
+
+    function gameOver() {
+        stage.state = stage.gameover;
+        button.iconSource = controlsPath +"redo.png"
+    }
+
+    function resume() {
+        stage.state = stage.started;
+        button.iconSource = controlsPath +"pause.png"
+    }
+
+    // TODO must save data
+    function nextLevel() {
+        stage.level++;
+        start();
+    }
+
+
+    function isStarted() {
+        return stage.state === stage.started;
+    }
+    function isStopped() {
+        return stage.state === stage.stopped;
+    }
+    function isPaused() {
+        return stage.state === stage.paused;
+    }
+    function isCompleted() {
+        return stage.state === stage.completed;
+    }
+    function isGameOver() {
+        return stage.state === stage.gameover;
+    }
+
 
     Component {
         id: nextlevel;
         Dialog {
             id: dialog;
-            title: i18n.tr("Congratulation!\nYou saved Tux!");
-            text: i18n.tr("Do you want to go to next level?");
+            title: i18n.tr("Congratulation!\nLevel "+ level +" is completed!");
+            text: i18n.tr("Do you wish to go to next level?");
 
             Button {
                 text: i18n.tr("Go to Next Level");
                 onClicked: {
-                    // must save data
-                    stage.level++;
-                    Manager.startGame();
                     PopupUtils.close(dialog);
-                    stage.state = "started";
+                    nextLevel();
                 }
             }
             Button {
@@ -205,14 +223,9 @@ Page {
         delegate: Block {
             id: gBlock;
             image: img;
-            property string name: {
-//                if (key === "ubuntu") {
-//                    ubuntuEmitter.enabled = true;
-//                }
-                return key;
-            }
+            property bool selected: GridView.isCurrentItem;
             color: {
-                if (GridView.isCurrentItem) {
+                if (gBlock.selected) {
                     if (Manager.hasBug()) {
                         return "orange";
                     } else {
@@ -222,11 +235,7 @@ Page {
                     return "transparent";
                 }
             }
-            onClicked: {
-                if (stage.state === "started") {
-                    Manager.select(index);
-                }
-            }
+            onClicked: Manager.select(index);
         }
         anchors {
             fill: parent;
@@ -300,14 +309,14 @@ Page {
         }
         onValueChanged: {
             if (value === 0) {
-                stage.state = "gameover";
+                gameOver();
             } else {
                 Manager.updateTroubleTime();
             }
         }
         SequentialAnimation on value {
             id: timer;
-            running: stage.state === "started";
+            running: isStarted();
             NumberAnimation {
                 from: timeBar.value;
                 to: timeBar.minimumValue;
@@ -328,22 +337,20 @@ Page {
             horizontalCenter: timeLabel.horizontalCenter;
         }
         onClicked: {
-            if (stage.state === "stopped") {
-                Manager.startGame();
-                stage.state = "started";
+            if (isStopped()) {
+                start();
             }
-            else if (stage.state === "started") {
-                stage.state = "paused";
+            else if (isStarted()) {
+                pause();
             }
-            else if (stage.state === "paused") {
-                stage.state = "started";
+            else if (isPaused()) {
+                resume();
             }
-            else if (stage.state === "completed") {
-                PopupUtils.open(nextlevel);
+            else if (isCompleted()) {
+                nextLevel();
             }
-            else if (stage.state === "gameover") {
-                Manager.startGame();
-                stage.state = "started";
+            else if (isGameOver()) {
+                start();
             }
         }
     }

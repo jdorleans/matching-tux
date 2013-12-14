@@ -98,7 +98,7 @@ function select(index)
     var block = gModel.get(index);
     console.debug("Selected: "+ index +" - "+ block.key);
 
-    if (isMoveable(block))
+    if (stage.isStarted() && isMoveable(block))
     {
         if (grid.currentIndex === index) {
             grid.currentIndex = -1; // deselect
@@ -695,7 +695,7 @@ function hasVirus() {
 function endGame()
 {
     if (stage.tuxs === Config.tux.max) {
-        stage.state = "completed";
+        stage.complete();
         console.debug("END GAME!");
     }
 }

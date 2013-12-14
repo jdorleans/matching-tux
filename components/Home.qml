@@ -20,9 +20,9 @@ Page {
             text: i18n.tr("Start Game");
 
             onClicked: {
-                tabHome.visible = false;
-                tabAbout.visible = false;
+                tabs.visible = false;
                 pages.push(stage);
+                stage.start();
             }
         }
 

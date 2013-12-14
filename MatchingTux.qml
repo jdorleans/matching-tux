@@ -1,7 +1,6 @@
 import QtQuick 2.0
 import Ubuntu.Components 0.1
 import "components"
-import "components/test"
 
 /*!
     \brief MainView with a Label and Button elements.
@@ -53,13 +52,8 @@ MainView {
 
         Stage {
             id: stage;
-            level: 50; // DEBUG
+            level: 30; // DEBUG
             visible: false;
-        }
-
-        StageTest {
-            id: test;
-            visible: false; // DEBUG
         }
     }
 
