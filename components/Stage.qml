@@ -24,33 +24,34 @@ Page {
     function start() {
         Manager.startGame();
         stage.state = stage.started;
-        button.iconSource = controlsPath +"pause.png"
+        button.iconSource = controlsPath +"pause.png";
     }
 
     function stop() {
         stage.state = stage.stopped;
-        button.iconSource = controlsPath +"play.png"
+        button.iconSource = controlsPath +"play.png";
     }
 
     function pause() {
         stage.state = stage.paused;
-        button.iconSource = controlsPath +"play.png"
+        button.iconSource = controlsPath +"play.png";
     }
 
     function complete() {
         stage.state = stage.completed;
-        button.iconSource = controlsPath +"play.png"
-        PopupUtils.open(nextlevel);
+        button.iconSource = controlsPath +"play.png";
+        PopupUtils.open(levelFrame);
     }
 
     function gameOver() {
         stage.state = stage.gameover;
-        button.iconSource = controlsPath +"redo.png"
+        button.iconSource = controlsPath +"redo.png";
+        PopupUtils.open(gameOverFrame);
     }
 
     function resume() {
         stage.state = stage.started;
-        button.iconSource = controlsPath +"pause.png"
+        button.iconSource = controlsPath +"pause.png";
     }
 
     // TODO must save data
@@ -78,17 +79,39 @@ Page {
 
 
     Component {
-        id: nextlevel;
+        id: levelFrame;
         Dialog {
-            id: dialog;
+            id: levelDialog;
             title: i18n.tr("Congratulation!\nLevel "+ level +" is completed!");
             text: i18n.tr("Do you wish to go to next level?");
 
             Button {
-                text: i18n.tr("Go to Next Level");
+                text: i18n.tr("Next Level");
                 onClicked: {
-                    PopupUtils.close(dialog);
+                    PopupUtils.close(levelDialog);
                     nextLevel();
+                }
+            }
+            Button {
+                text: i18n.tr("Quit");
+                gradient: UbuntuColors.greyGradient
+                onClicked: Qt.quit();
+            }
+        }
+    }
+
+    Component {
+        id: gameOverFrame;
+        Dialog {
+            id: gameOverDialog;
+            title: i18n.tr("Game Over!");
+            text: i18n.tr("Do you wish to play again?");
+
+            Button {
+                text: i18n.tr("Play");
+                onClicked: {
+                    PopupUtils.close(gameOverDialog);
+                    start();
                 }
             }
             Button {
@@ -219,7 +242,8 @@ Page {
             id: gModel;
         }
 
-        //Note: Delegates are instantiated as needed and may be destroyed at any time. State should never be stored in a delegate.
+        // Note: Delegates are instantiated as needed and may be destroyed at any time.
+        // State should never be stored in a delegate.
         delegate: Block {
             id: gBlock;
             image: img;
@@ -346,12 +370,6 @@ Page {
             else if (isPaused()) {
                 resume();
             }
-            else if (isCompleted()) {
-                nextLevel();
-            }
-            else if (isGameOver()) {
-                start();
-            }
         }
     }
 
@@ -359,10 +377,10 @@ Page {
         id: status;
         objectName: "status";
         rows: 1;
-        columnSpacing: units.gu(6);
+        columnSpacing: units.gu(6.4);
         anchors {
             left: timeBar.left;
-            leftMargin: 1;
+            leftMargin: units.gu(0.8);
             verticalCenter: button.verticalCenter;
         }
         Image {

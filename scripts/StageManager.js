@@ -315,7 +315,7 @@ function findTuxsNearBlock(key)
 }
 
 function bugPosition(first, second)
-{    
+{
     var indexs = Utils.findNearIndexs(first);
     var idx = indexs.indexOf(second);
 
