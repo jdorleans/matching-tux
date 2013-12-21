@@ -25,9 +25,11 @@ MainView {
 
     PageStack {
         id: pages
+        Component.onCompleted: push(tabs);
 
         Tabs {
             id: tabs;
+            visible: false
 
             Tab {
                 id: tabHome;
@@ -52,7 +54,7 @@ MainView {
 
         Stage {
             id: stage;
-            level: 30; // DEBUG
+            level: 1; // DEBUG
             visible: false;
         }
     }

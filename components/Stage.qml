@@ -19,7 +19,7 @@ Page {
     property string gameover: "gameover";
 
     state: stopped;
-    title: i18n.tr("Level") +" "+ level;
+    title: i18n.tr("Level") +" "+ level; 
 
     function start() {
         Manager.startGame();

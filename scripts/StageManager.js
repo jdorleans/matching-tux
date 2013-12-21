@@ -389,7 +389,6 @@ function removeBlocks(blocks)
         for (var i = 0; i < blocks.length; i++) {
             matches = updateMatches(blocks[i], matches);
         }
-        updateScore(matches);
         updateTuxGoal(matches.tux);
 
         var removes = powerDebian(matches.debian);
@@ -402,13 +401,17 @@ function removeBlocks(blocks)
         blocks = Utils.intersect(blocks, removes);
 
         powerMint(matches.mint);
+        matches.scores = blocks.length;
+        updateScore(matches);
 
+        if (blocks.length >= matchSize*4) {
+            virusEffect.moves++;
+        }
         if (matches.bug > matchSize) {
             removeBugEffect();
         }
         if (matches.virus > matchSize) {
             removeVirusEffect();
-            virusEffect.moves++;
         }
     }
 
@@ -436,7 +439,6 @@ function updateMatches(block, matches)
     } else if (key === "virus") {
         matches.virus++;
     }
-    matches.scores++;
     return matches;
 }
 
@@ -488,7 +490,7 @@ function updateScore(matches)
 {
     if (matches.scores > 0)
     {
-        var scores = matches.scores
+        var scores = matches.scores;
         var combo = Math.floor(scores / matchSize);
 
         if (matches.bug > 0) {
@@ -514,7 +516,6 @@ function powerDebian(value)
         if (value > matchSize+1) {
             packs = value;
             value *= 2;
-            virusEffect.moves++
         }
 
         for (var idx = 0; idx<matrix; idx++)
@@ -553,7 +554,6 @@ function powerUbuntu(value)
 
         if (value > matchSize+1) {
             fixs = value+2;
-            virusEffect.moves++
         }
 
         for (var idx = 0; idx<matrix; idx++)
@@ -585,10 +585,6 @@ function powerArch(indexs)
 
     if (indexs.length > matchSize)
     {
-        if (indexs.length > matchSize+1) {
-            virusEffect.moves++;
-        }
-
         var cols = [];
         var rows = [];
         var rmCol = null;
@@ -647,13 +643,12 @@ function powerMint(value)
 {
     if (value > matchSize)
     {
-        virusEffect.moves++;
         removeBugEffect();
         removeVirusEffect();
 
         if (value > matchSize+1) {
-            virusEffect.moves++;
             removeBugEffect();
+            removeVirusEffect();
         }
     }
 }
